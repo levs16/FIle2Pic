@@ -1,16 +1,15 @@
 from tkinter import Tk, filedialog
 from PIL import Image, ImageDraw
 import os
-import time
 import datetime
 
-# encode by char
+# Encode by char
 def encode_character(character):
     ascii_value = ord(character)
     color = (ascii_value % 256, (ascii_value // 256) % 256, (ascii_value // 256 // 256) % 256)
     return color
 
-# decode by char
+# Decode by char
 def decode_image(image_path):
     image = Image.open(image_path)
     pixels = list(image.getdata())
@@ -20,7 +19,7 @@ def decode_image(image_path):
         decoded_text += chr(ascii_value)
     return decoded_text
 
-# encode to image
+# Encode to image
 def encode_text(text, output_image_path):
     # Determine the size of the square based on the length of the text
     square_size = int(len(text) ** 0.5) + 1
@@ -28,7 +27,7 @@ def encode_text(text, output_image_path):
     image = Image.new("RGB", image_size, "white")
     draw = ImageDraw.Draw(image)
     
-    # pick encoding color for a character square and append to image
+    # Pick encoding color for a character square and append to image
     for i, char in enumerate(text):
         color = encode_character(char)
         x = i % square_size
@@ -36,7 +35,7 @@ def encode_text(text, output_image_path):
         draw.rectangle([x, y, x+1, y+1], fill=color)
     image.save(output_image_path)
 
-# file picker
+# File picker
 def pick_file():
     root = Tk()
     root.withdraw()
@@ -45,13 +44,13 @@ def pick_file():
     root.destroy()
     return file_path
 
-# main function(read input, call functions)
+# Main function(read input, call functions)
 def main():
     # get choice from user
     print("'e': encode\n'd': decode")
     choice = input("Enter your option>> ")
     
-    # if "e", encode
+    # If "e", encode
     if choice == 'e':
         input_file = pick_file()
         if not input_file:
@@ -62,7 +61,7 @@ def main():
             text = file.read()
             encode_text(text, output_image)
             print("Encoding complete. Image saved to:", output_image)
-    # if "d", decode
+    # If "d", decode
     elif choice == 'd':
         input_image = pick_file()
         if not input_image:
